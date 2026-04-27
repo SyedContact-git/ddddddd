@@ -94,12 +94,44 @@ export default function Home() {
         <h1 className="text-3xl font-bold tracking-tight">Study API Proxy</h1>
         <p className="mt-2 text-gray-400">
           Full proxy mirror of all educational platform API routes. All
-          responses are returned as-is from the upstream server with CORS
-          headers enabled.
+          responses are cached and <strong className="text-emerald-400">auto-updated every 60 seconds</strong> from
+          the upstream server with CORS headers enabled.
         </p>
       </header>
 
       <main className="mx-auto max-w-5xl px-6 py-10 space-y-12">
+        <section>
+          <h2 className="text-xl font-semibold text-indigo-400 mb-2">
+            Auto-Update Cache
+          </h2>
+          <div className="rounded-lg bg-gray-900 border border-gray-800 p-5 text-sm leading-relaxed space-y-2">
+            <p>
+              All API responses are automatically cached and refreshed every{" "}
+              <strong className="text-emerald-400">60 seconds</strong>.
+            </p>
+            <p>
+              <strong>GET routes:</strong> Use Next.js Data Cache with{" "}
+              <code className="text-emerald-400">revalidate: 60</code>. First
+              request fetches from upstream, subsequent requests serve cached
+              data. After 60s the cache auto-refreshes in the background.
+            </p>
+            <p>
+              <strong>POST routes:</strong> Use in-memory cache with 60s TTL.
+              Same request body returns cached response within the TTL window.
+            </p>
+            <p>
+              Check cache status:{" "}
+              <code className="text-emerald-400">/api/cache-status</code>
+            </p>
+            <p>
+              Response headers include{" "}
+              <code className="text-emerald-400">X-Cache</code> (HIT/MISS/REVALIDATE)
+              and{" "}
+              <code className="text-emerald-400">X-Cache-Age</code> (seconds since cached).
+            </p>
+          </div>
+        </section>
+
         <section>
           <h2 className="text-xl font-semibold text-indigo-400 mb-2">
             How to Play PW Videos
@@ -198,8 +230,8 @@ export default function Home() {
       </main>
 
       <footer className="border-t border-gray-800 px-6 py-6 text-center text-sm text-gray-500">
-        All data is proxied from upstream APIs. This server adds CORS headers
-        for cross-origin access.
+        All data is proxied and auto-cached (60s refresh) from upstream APIs.
+        This server adds CORS headers for cross-origin access.
       </footer>
     </div>
   );
