@@ -6,7 +6,7 @@ export async function GET(
   { params }: { params: Promise<{ courseId: string }> }
 ) {
   const { courseId } = await params;
-  return proxyGet(req, `/api/rwa/subjects/${courseId}`);
+  return proxyGet(req, `/api/rwa/subjects/${encodeURIComponent(courseId)}`);
 }
 
 export function OPTIONS() {
